@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h3>Calculadora Sencilla</h3>
+    
+    <form action="/resultado" method="post">
+        
+        <label>Número 1:</label>
+        <input type="text" class="form-control" name="n1" required>
+
+        <label>Número 2:</label>
+        <input type="text" class="form-control" name="n2" required>
+
+        <label><strong>Selecciona una operación:</strong></label><br>
+        
+        <input type="radio" name="operacion" value="suma" checked> Suma <br>
+        <input type="radio" name="operacion" value="resta"> Resta <br>
+        <input type="radio" name="operacion" value="multi"> Multiplicación <br>
+        <input type="radio" name="operacion" value="div"> División <br>
+        
+        <br>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
+
+{% endblock %}

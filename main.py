@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template,request
 
 app=Flask(__name__)
 
@@ -31,7 +31,7 @@ def username(id,username):
 
 @app.route("/suma/<float:n1>/<float:n2>")
 def func(n1,n2):
-    return "lasuma es: {}".format(n1+n2)
+    return "la suma es: {}".format(n1+n2)
 
 @app.route("/default")
 @app.route("/default/<string:param>")
@@ -49,6 +49,36 @@ def operas():
     <input type="text" id="name" name="name" required>
     </form>
 '''
+@app.route("/operasBas")
+def operas1():
+    return render_template("operasBas.html")
+
+@app.route("/resultado", methods=["GET", "POST"])
+def resultado():
+    if request.method == "POST":
+            n1 = float(request.form.get("n1"))
+            n2 = float(request.form.get("n2"))
+            operacion = request.form.get("operacion")
+            
+            res = 0
+            
+            if operacion == "suma":
+                res = n1 + n2
+            elif operacion == "resta":
+                res = n1 - n2
+            elif operacion == "multi":
+                res = n1 * n2
+            elif operacion == "div":
+                if n2 != 0:
+                    res = n1 / n2
+                else:
+                    return "Error: No se puede dividir entre cero"
+            
+            return f"El resultado de la {operacion} es: {res}"
+            
+    return render_template("operasBas.html")
 
 if __name__=='__main__':
     app.run(debug=True)
+
+
