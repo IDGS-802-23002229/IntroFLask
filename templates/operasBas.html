@@ -4,7 +4,7 @@
 
     <h3>Calculadora Sencilla</h3>
     
-    <form action="/resultado" method="post">
+    <form action="/operasBas" method="post">
         
         <label>Número 1:</label>
         <input type="text" class="form-control" name="n1" required>
@@ -22,5 +22,9 @@
         <br>
         <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
+
+    <h1>
+        la suma de {{ n1 }} + {{ n2 }} = {{"%.2f"|format(res)}}
+    </h1>
 
 {% endblock %}

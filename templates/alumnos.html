@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3>Calculadora Sencilla</h3>
+
+{% import "_macros.html" as macro %}
+
+<form action="/operasBas" method="post">
+
+{{macro.datos("n1","Ingrese el primer numero","number")}}
+
+{{macro.datos("nombre","Ingrese el nombre")}}
+
+{{macro.datos("contraseña","Ingrese la contraseña","password")}}
+
+<div class="mb-3">
+    <label for="n2" class="form-label">Numero 2:</label>
+    <input type="number" class="form-control" id="n2" name="n2">
+</div>
+    <button class="btn btn-primary">Calcular</button>
+</form>
+
+{% endblock %}
