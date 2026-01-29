@@ -140,6 +140,49 @@ def resultado():
             
     return render_template("operasBas.html")
 
+PRECIO_BOLETO = 12
+
+@app.route('/cine', methods=['POST','GET'])
+def procesar():
+    nombre = ""
+    compradores = ""
+    boletos = ""
+    cineco = ""
+    total=0
+
+    if request.method == "POST":
+        nombre = request.form.get("nombre")
+        compradores = int(request.form.get("compradores"))
+        boletos = int(request.form.get('boletos'))
+        cineco = request.form.get("cineco")
+
+        error=""
+        descuento = 0
+
+        if boletos > compradores  * 7:
+            error = "No se pueden comprar más de 7 boletos por persona."
+            return render_template("index.html", error=error)
+        
+        total = boletos * PRECIO_BOLETO
+
+        if compradores > 5:
+            descuento = total * .15
+        elif compradores >= 3 and compradores <= 5:
+            descuento = total * .10
+        else:
+            descuento = 0
+        
+        total = total - descuento
+
+        if cineco == "si":
+            descuento_cineco = total * .1
+            total = total - descuento_cineco
+        else:
+            descuento_cineco = 0
+
+    return render_template("cinepolis.html", nombre=nombre, compradores=compradores, boletos=boletos,
+                           cineco=cineco, total=total)
+
 if __name__ == '__main__':
     csrf.init_app(app)
     app.run(debug=True)

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinépolis</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-primary text-white">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Cinépolis</h1>
+
+    <div class="row">
+        
+        <div class="col-md-6">
+            <div class="card text-dark">
+                <div class="card-header">Entradas</div>
+                <div class="card-body">
+
+                    <form action="/cine" method="post">
+
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" class="form-control mb-2" required>
+
+                        <label>Cantidad compradores</label>
+                        <input type="number" name="compradores" class="form-control mb-2" required>
+
+                        <label>Cantidad de boletos</label>
+                        <input type="number" name="boletos" class="form-control mb-2" required>
+
+                        <label>Tarjeta Cinéco</label><br>
+                        <input type="radio" name="cineco" value="si"> Sí
+                        <input type="radio" name="cineco" value="no" checked> No
+                        <br><br>
+
+                        <button class="btn btn-success">Procesar</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SALIDAS -->
+        <div class="col-md-6">
+            <div class="card text-dark">
+                <div class="card-header">Salidas</div>
+                <div class="card-body">
+
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+
+                    {% if total %}
+                        <p><strong>Nombre:</strong> {{ nombre }}</p>
+                        <p><strong>Compradores:</strong> {{ compradores }}</p>
+                        <p><strong>Boletos:</strong> {{ boletos }}</p>
+                        <p><strong>Total a pagar:</strong> ${{ total }}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
