@@ -7,6 +7,8 @@
 {% import "_macros.html" as macro %}
 
 <form action="/distancia" method="post">
+    {{form.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}"></input>
 
     {{ macro.datos("x1", "Ingrese x1", "number") }}
     {{ macro.datos("y1", "Ingrese y1", "number") }}

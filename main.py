@@ -16,30 +16,6 @@ def index():
     lista = ['juan', 'karina', 'miguel']
     return render_template('index.html', titulo=titulo, lista=lista)
 
-@app.route("/usuarios", methods=["GET", "POST"])
-def usuarios():
-    mat = 0
-    nom = ''
-    apa = ''
-    ama = ''
-    email = ''
-
-    mensaje='Bienvenido{}'.format(nom)
-    flash(mensaje)
-
-    usuarios_class = forms.UserForm(request.form) 
-    
-    if request.method == "POST" and usuarios_class.validate(): 
-        mat = usuarios_class.matricula.data
-        nom = usuarios_class.nombre.data
-        apa = usuarios_class.apaterno.data
-        ama = usuarios_class.amaterno.data
-        email = usuarios_class.correo.data
-
-
-    return render_template("usuarios.html", form=usuarios_class,
-                           mat=mat, nom=nom, apa=apa, ama=ama, correo=email)
-
 @app.route('/formularios')
 def formularios():
     return render_template("formulario.html")
@@ -88,13 +64,14 @@ def distancia():
     y1 = 0
     y2 = 0
     res = 0
+    cine_class = forms.CineForm(request.form)
     if request.method == "POST":
         x1 = request.form.get("x1")
         x2 = request.form.get("x2")
         y1 = request.form.get("y1")
         y2 = request.form.get("y2")
         res = math.sqrt((float(x2) - float(x1))**2 + (float(y2) - float(y1))**2)
-    return render_template("distancia.html", res=res)
+    return render_template("distancia.html", res=res,form=cine_class)
 
 @app.route("/alumnos", methods=["GET","POST"])
 def alumnos():
@@ -150,24 +127,27 @@ def procesar():
     cineco = ""
     total=0
 
-    if request.method == "POST":
-        nombre = request.form.get("nombre")
-        compradores = int(request.form.get("compradores"))
-        boletos = int(request.form.get('boletos'))
-        cineco = request.form.get("cineco")
+    cine_class = forms.CineForm(request.form)
+
+    if request.method == "POST" and cine_class.validate():
+        
+        nombre = cine_class.nombre.data       
+        compradores = int(cine_class.compradores.data)
+        boletos = int(cine_class.boletos.data)
+        cineco = cine_class.cineco.data
 
         error=""
         descuento = 0
 
         if boletos > compradores  * 7:
             error = "No se pueden comprar más de 7 boletos por persona."
-            return render_template("index.html", error=error)
+            return render_template("cinepolis.html", error=error,form=cine_class)
         
         total = boletos * PRECIO_BOLETO
 
-        if compradores > 5:
+        if boletos > 5:
             descuento = total * .15
-        elif compradores >= 3 and compradores <= 5:
+        elif boletos >= 3 and boletos <= 5:
             descuento = total * .10
         else:
             descuento = 0
@@ -180,8 +160,32 @@ def procesar():
         else:
             descuento_cineco = 0
 
-    return render_template("cinepolis.html", nombre=nombre, compradores=compradores, boletos=boletos,
+    return render_template("cinepolis.html", form=cine_class, nombre=nombre, compradores=compradores, boletos=boletos,
                            cineco=cineco, total=total)
+
+@app.route("/usuarios", methods=["GET", "POST"])
+def usuarios():
+    mat = 0
+    nom = ''
+    apa = ''
+    ama = ''
+    email = ''
+
+    mensaje='Bienvenido{}'.format(nom)
+    flash(mensaje)
+
+    usuarios_class = forms.UserForm(request.form) 
+    
+    if request.method == "POST" and usuarios_class.validate(): 
+        mat = usuarios_class.matricula.data
+        nom = usuarios_class.nombre.data
+        apa = usuarios_class.apaterno.data
+        ama = usuarios_class.amaterno.data
+        email = usuarios_class.correo.data
+
+
+    return render_template("usuarios.html", form=usuarios_class,
+                           mat=mat, nom=nom, apa=apa, ama=ama, correo=email)
 
 if __name__ == '__main__':
     csrf.init_app(app)
